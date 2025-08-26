@@ -1,0 +1,21 @@
+{
+	"name": "Zengin Authenticator",
+	"version": "0.0.1",
+	"author": "Calculamatrise",
+	"description": "An authenticator for modern browsers.",
+	"manifest_version": 3,
+	"action": {
+		"default_popup": "popup/index.html"
+	},
+	"background": {
+		"service_worker": "service-worker.js",
+		"type": "module"
+	},
+	"icons": {
+		"16": "icons/icon_16.png",
+		"48": "icons/icon_48.png",
+		"128": "icons/icon_128.png"
+	},
+	"permissions": ["activeTab", "scripting", "storage"],
+	"update_url": "https://clients2.google.com/service/update2/crx"
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Zengin Authenticator</title>
+	<link rel="stylesheet" href="style.css">
+	<script type="module" src="script.js" defer></script>
+</head>
+<body>
+	<!-- <header>
+		<button class="tab" id="scan" disabled>Scan</button>
+		<label for="settings" class="ripple icon settings-icon"></label>
+	</header> -->
+	<button class="tab" id="scan" disabled>Scan</button>
+	<nav>
+		<label for="codes" class="tab ripple">Codes</label>
+		<label for="settings" class="tab ripple">Settings</label>
+	</nav>
+	<div class="details" id="app-container">
+		<input type="radio" name="nav" id="codes" checked hidden>
+		<template>
+			<div class="secret">
+				<span class="app">
+					<img>
+					<span class="metadata">
+						<a class="issuer" target="_blank"></a>
+						<div class="uid"></div>
+					</span>
+				</span>
+				<span class="code"></span>
+				<span class="action-row">
+					<button class="icon edit-icon"></button>
+					<button class="icon copy-icon"></button>
+				</span>
+			</div>
+		</template>
+		<dialog>
+			<span class="app">
+				<img>
+				<span class="metadata">
+					<div data-name="issuer"></div>
+					<div data-name="timestamp"></div>
+				</span>
+			</span>
+			<span data-name="uid"></span>
+			<div class="code-container">
+				<span class="code" data-name="code"></span>
+				<span class="action-row">
+					<button class="icon copy-icon"></button>
+					<button class="icon delete-icon danger"></button>
+				</span>
+			</div>
+			<form class="action-row">
+				<button value="save" disabled>Save</button>
+				<button>Close</button>
+			</form>
+		</dialog>
+	</div>
+	<div class="details">
+		<input type="radio" name="nav" id="settings" hidden>
+		<label title="Automatically fill one-time-passcodes">
+			<input type="checkbox" id="autoFill">
+			<span class="name">Auto-fill OTP</span>
+		</label>
+		<label title="Automatically scan pages for QR codes to save for 2FA">
+			<input type="checkbox" id="autoScan">
+			<span class="name">Auto-scan pages</span>
+		</label>
+	</div>
+	<footer>Product of <a href="https://zengin.ca" target="_blank">Zengin</a></footer>
+</body>
+</html>
