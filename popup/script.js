@@ -2,6 +2,11 @@ import "../utils/Storage.js";
 import defaults from "../constants/defaults.js";
 import TOTP from "../utils/TOTP.js";
 
+const sponsor = document.getElementById('sponsor');
+sponsor.addEventListener('click', function() {
+	chrome.tabs.create({ url: 'https://github.com/sponsors/zenginlimited' })
+}, { passive: true });
+
 const APP = {
 	container: document.querySelector('#app-container'),
 	dialog: document.querySelector('#app-container > dialog'),
@@ -23,6 +28,7 @@ copyAppCode.addEventListener('click', async function() {
 
 const removeApp = APP.dialog.querySelector('.delete-icon');
 removeApp.addEventListener('click', async function() {
+	if (!confirm("Are you sure you want to permanently delete your secret? This action cannot be undone and may prevent further access into your account.")) return;
 	await chrome.storage.proxy.local.delete(APP.dialog.dataset.id);
 	APP.dialog.close('removed')
 });
@@ -60,6 +66,20 @@ chrome.tabs.query({ active: true, currentWindow: true }).then(([currentTab]) => 
 		}
 
 		secrets.size > 0 && updateSecrets(secrets);
+		// chrome.storage.sync.get(cloud => {
+		// 	// Reset map -- or update all after checking sync storage
+		// 	secrets.clear();
+		// 	for (const key in cloud) {
+		// 		if (!key.includes(':')) continue;
+		// 		secrets.set(key, cloud[key]);
+		// 		if (data.settings.autoFill && activeDomain && activeDomain === cloud[key].domain) {
+		// 			autoFill(currentTab.id, cloud[key]);
+		// 		}
+		// 	}
+
+		// 	secrets.size > 0 && updateSecrets(secrets)
+		// });
+
 		// move current tab secret to top -- check url and find secret w/ url
 		data.settings.autoScan && autoScan(currentTab.id)
 	});
@@ -216,7 +236,8 @@ async function updateSecret(id, data, { createIfNotExists } = {}) {
 	icon.src !== data.appIconURL && (icon.src = data.appIconURL);
 	issuer.href = 'https://' + data.domain;
 	issuer.textContent = data.issuer;
-	uid.textContent = data.uid
+	uid.textContent = data.uid;
+	uid.title = data.uid
 }
 
 for (const item in defaults) {
@@ -238,19 +259,3 @@ function restoreSettings(data) {
 		}
 	}
 }
-
-const rippleCache = new WeakMap();
-document.documentElement.addEventListener('pointerdown', function (event) {
-	event.target.style.setProperty('--offsetX', event.offsetX);
-	event.target.style.setProperty('--offsetY', event.offsetY);
-	rippleCache.has(event.target) && clearTimeout(rippleCache.get(event.target));
-	const timeout = setTimeout(() => {
-		event.target.style.removeProperty('--offsetX', event.offsetX);
-		event.target.style.removeProperty('--offsetY', event.offsetY);
-		event.target.style.length === 0 && event.target.removeAttribute('style');
-		rippleCache.delete(event.target)
-	}, 1e3);
-	rippleCache.set(event.target, timeout)
-	// this.style.setProperty('--offsetX', event.offsetX);
-	// this.style.setProperty('--offsetY', event.offsetY)
-});
