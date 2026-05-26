@@ -1,0 +1,34 @@
+.slider {
+	container-type: inline-size;
+	display: grid;
+	overflow: hidden;
+	position: relative;
+	/*transition: height .4s ease;*/
+}
+
+/* Custom rules */
+:has(.details > #settings:not(:checked)) .details:has(> #codes),
+
+.slider > .details:has(> input:is([type="checkbox"], [type="radio"])) {
+	box-sizing: border-box;
+	pointer-events: auto;
+	position: relative;
+	transition:
+		opacity .2s ease,
+		translate .2s ease;
+	translate: 0;
+	width: 100cqw;
+}
+
+/* Custom rules */
+:has(.details > #settings:checked) .details:has(> #codes),
+
+.slider > .details:has(> input:is([type="checkbox"], [type="radio"]):not(:checked)) {
+	display: block !important;
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	inset: 0;
+	interactivity: inert;
+	translate: 40px;
+}

@@ -1,6 +1,6 @@
 {
 	"name": "Zengin Authenticator",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"author": "Zengin Limited",
 	"description": "An authenticator for modern browsers.",
 	"manifest_version": 3,
@@ -8,7 +8,7 @@
 		"default_popup": "popup/index.html"
 	},
 	"background": {
-		"service_worker": "service-worker.js",
+		"service_worker": "core/background.js",
 		"type": "module"
 	},
 	"icons": {
@@ -16,5 +16,10 @@
 		"48": "icons/icon_48.png",
 		"128": "icons/icon_128.png"
 	},
-	"permissions": ["activeTab", "scripting", "storage"]
+	"permissions": ["activeTab", "identity", "scripting", "storage"],
+	"host_permissions": ["<all_urls>"],
+	"oauth2": {
+		"client_id": "296154345248-ppsdfq3d52b7ats216smoi13bsa690nn.apps.googleusercontent.com",
+		"scopes": ["https://www.googleapis.com/auth/gmail.readonly"]
+	}
 }

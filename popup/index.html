@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Zengin Authenticator</title>
-	<link rel="stylesheet" href="style.css">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="style.css" />
+	<script src="runtime.js" defer></script>
 	<script src="ux.js"></script>
 	<script type="module" src="script.js" defer></script>
 </head>
@@ -13,72 +13,216 @@
 		<button class="tab" id="scan" disabled>Scan</button>
 		<button id="sponsor">
 			<svg height="16" viewBox="0 0 16 16" width="16" fill="#c96198">
-				<path d="m8 14.25.345.666a.75.75 0 0 1-.69 0l-.008-.004-.018-.01a7.152 7.152 0 0 1-.31-.17 22.055 22.055 0 0 1-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.066 22.066 0 0 1-3.744 2.584l-.018.01-.006.003h-.002ZM4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.58 20.58 0 0 0 8 13.393a20.58 20.58 0 0 0 3.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 0 1-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5Z"></path>
+				<path
+					d="m8 14.25.345.666a.75.75 0 0 1-.69 0l-.008-.004-.018-.01a7.152 7.152 0 0 1-.31-.17 22.055 22.055 0 0 1-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.066 22.066 0 0 1-3.744 2.584l-.018.01-.006.003h-.002ZM4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.58 20.58 0 0 0 8 13.393a20.58 20.58 0 0 0 3.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 0 1-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5Z"
+				></path>
 			</svg>
-			<!-- Show sponsor text on hover — expand width -->
-			<!-- <span>Sponsor</span> -->
 		</button>
+		<label for="settings"><span icon="settings"></span></label>
 	</header>
-	<nav>
-		<label for="codes" class="tab ripple">Codes</label>
-		<label for="settings" class="tab ripple">Settings</label>
-	</nav>
-	<div class="details" id="app-container">
-		<input type="radio" name="nav" id="codes" checked hidden>
-		<template>
-			<div class="secret">
+	<button class="tab" id="paste" icon="clipboard" icon-place="before" style="display:none">Paste code</button>
+	<hr />
+	<main class="slider">
+		<div class="details">
+			<input type="radio" name="nav" id="codes" checked hidden />
+			<!-- Hide Gmail container by default unless gmailIntegration is true -->
+			<div id="gmail-integration" class="details" hidden>
+				<div class="summary">
+					<label for="gmail-codes" class="remote" style="align-items:center;display:flex">
+						<span icon="gmail" icon-mode="bg" style="height:100%;margin-right:.5em"></span>
+						<span class="name">Gmail codes</span>
+						<span class="counter loading" style="font-family:monospace;margin-left:auto;width:1em">0</span>
+					</label>
+					<button id="refresh-gmail" class="cond:open" icon="refresh" icon-place="before"></button>
+				</div>
+				<div class="wrapper">
+					<div id="email-container" class="details sub-opts loading">
+						<input type="checkbox" id="gmail-codes">
+						<template>
+							<div class="secret">
+								<span class="app">
+									<img />
+									<span class="metadata">
+										<a class="issuer" target="_blank"></a>
+										<div class="account"></div>
+									</span>
+								</span>
+								<span class="code"></span>
+								<!-- Add opts: "Never suggest codes from this sender" -->
+								<span class="action-row">
+									<button class="icon delete-icon danger"></button>
+									<button class="icon copy-icon"></button>
+								</span>
+							</div>
+						</template>
+					</div>
+				</div>
+			</div>
+			<div id="app-container">
+				<template>
+					<div class="secret">
+						<span class="app">
+							<svg viewBox="0 0 24 24" class="timer">
+								<circle cx="12" cy="12" r="var(--r)" class="track"/>
+								<circle cx="12" cy="12" r="var(--r)" class="progress"/>
+								<foreignObject>
+									<img />
+								</foreignObject>
+							</svg>
+							<span class="metadata">
+								<a class="issuer" target="_blank"></a>
+								<div class="account"></div>
+							</span>
+						</span>
+						<span class="code"></span>
+						<span class="action-row">
+							<button class="icon edit-icon"></button>
+							<button class="icon copy-icon"></button>
+						</span>
+					</div>
+				</template>
+				<dialog data-id="app">
+					<span class="app">
+						<img />
+						<span class="metadata">
+							<div data-name="issuer"></div>
+							<div data-name="timestamp"></div>
+						</span>
+						<button class="icon danger hover-border" style="margin-left:auto">
+							<span icon="delete"></span>
+						</button>
+					</span>
+					<span data-name="account"></span>
+					<hr />
+					<div class="code-container">
+						<span class="code" data-name="code"></span>
+						<span class="action-row">
+							<button class="icon copy-icon"></button>
+						</span>
+					</div>
+					<form method="dialog" class="action-row">
+						<button value="save" disabled>Save</button>
+						<button>Close</button>
+					</form>
+				</dialog>
+			</div>
+			<hr />
+			<button id="manual" style="width:100%">Manually add a secret</button>
+			<dialog data-id="manual">
 				<span class="app">
-					<img>
+					<img />
 					<span class="metadata">
-						<a class="issuer" target="_blank"></a>
-						<div class="uid"></div>
+						<input type="text" placeholder="Issuer">
 					</span>
 				</span>
-				<span class="code"></span>
-				<span class="action-row">
-					<button class="icon edit-icon"></button>
-					<button class="icon copy-icon"></button>
-				</span>
+				<input type="text" placeholder="Account">
+				<hr />
+				<input type="text" id="secret" placeholder="Secret" style="display:block" />
+				<form method="dialog" class="action-row">
+					<button value="save" disabled>Save</button>
+					<button>Cancel</button>
+				</form>
+			</dialog>
+		</div>
+		<div class="details overlay">
+			<input type="checkbox" name="nav" id="settings" hidden />
+			<div class="summary">
+				<label title="Encrypt stored secrets with a password known only to you">
+					<input type="checkbox" id="encrypt" />
+					<span class="name">Encrypt secrets</span>
+				</label>
+				<label for="encryptOptions" class="remote +chevron"></label>
 			</div>
-		</template>
-		<dialog>
-			<span class="app">
-				<img>
-				<span class="metadata">
-					<div data-name="issuer"></div>
-					<div data-name="timestamp"></div>
-				</span>
-				<button class="icon danger hover-border"><span class="mask-icon delete-icon"></span></button>
-			</span>
-			<span data-name="uid"></span>
-			<hr>
-			<div class="code-container">
-				<span class="code" data-name="code"></span>
-				<span class="action-row">
-					<button class="icon copy-icon"></button>
-				</span>
+			<div class="wrapper">
+				<div class="details sub-opts">
+					<input type="checkbox" id="encryptOptions">
+					<label title="Require device to view and manage secrets">
+						<span class="name" counter="Immediately">Lock after</span>
+						<input type="range" id="lockAfter" class="override-pointer-events" step="15" min="0" value="0" max="900" style="width:100%" />
+					</label>
+					<button disabled style="width:100%">Change pin</button>
+				</div>
 			</div>
-			<form class="action-row">
-				<button value="save" disabled>Save</button>
-				<button>Close</button>
-			</form>
-		</dialog>
-	</div>
-	<div class="details">
-		<input type="radio" name="nav" id="settings" hidden>
-		<label title="Automatically fill one-time-passcodes">
-			<input type="checkbox" id="autoFill">
-			<span class="name">Auto-fill OTP</span>
-		</label>
-		<label title="Automatically scan pages for QR codes to save for 2FA">
-			<input type="checkbox" id="autoScan">
-			<span class="name">Auto-scan pages</span>
-		</label>
-		<label class="disabled" title="Sync your settings across devices">
-			<input type="checkbox" id="sync">
-			<span class="name">Sync settings</span>
-		</label>
-	</div>
+			<label title="Group secrets by app" class="disabled">
+				<input type="checkbox" id="grouping" />
+				<span class="name">Grouping</span>
+			</label>
+			<div class="summary">
+				<label title="Log events including OTP read from email, email deleted on success, etc." class="disabled">
+					<input type="checkbox" id="logEvents" />
+					<span class="name">Log events</span>
+				</label>
+				<label for="logEventsOptions" class="remote +chevron"></label>
+			</div>
+			<div class="wrapper">
+				<div class="details sub-opts">
+					<input type="checkbox" id="logEventsOptions">
+					<label>
+						<span class="name">Max entries</span>
+						<input type="range" id="maxLogLength" min="3" value="5" max="15" />
+					</label>
+				</div>
+			</div>
+			<label title="Suggest filling one-time-passcode upon opening this popup">
+				<input type="checkbox" id="suggestOnOpen" checked />
+				<span class="name">Suggest on open</span>
+			</label>
+			<details>
+				<summary class="tab"><span icon="chain-link" style="height:100%;inset:.5em 0 0 .65em;position:absolute"></span>Integrations</summary>
+				<div class="summary">
+					<label title="Automatically get one-time-passcodes from Gmail">
+						<span icon="gmail" icon-mode="bg" style="height:100%;margin-right:.5em"></span>
+						<span class="name">Gmail</span>
+						<input pending type="checkbox" id="gmailIntegration" style="float:right" />
+					</label>
+					<!--<button class="danger icon-delete" title="Revoke token">×</button>-->
+					<label for="gmailIntegrationOptions" class="remote +chevron"></label>
+				</div>
+				<div class="wrapper">
+					<div class="details sub-opts">
+						<input type="checkbox" id="gmailIntegrationOptions" hidden>
+						<div style="display:flex">
+							<label title="Automatically delete the used OTP email upon successful use" style="width:100%">
+								<input type="checkbox" id="deleteEmailOnSuccess" />
+								<span class="name">Auto-delete email</span>
+							</label>
+							<!--<button class="danger icon-delete" title="Revoke token">×</button>-->
+						</div>
+						<label title="Uses broader matching to detect OTPs on websites where standard detection fails -- may occasionally produce false positives">
+							<input type="checkbox" id="expandSearch" checked />
+							<span class="name">Expanded search</span>
+						</label>
+						<!-- onblur, pause interval and save last check, continue onfocus? -->
+						<label title="Filter emails older than the specified range">
+							<span class="name" counter="10">Refresh interval</span>
+							<input type="range" id="refreshInterval" class="override-pointer-events" step="5" min="5" value="10" max="180" style="width:100%" />
+						</label>
+						<label title="Filter emails older than the specified range">
+							<span class="name" counter="5m">Max age</span>
+							<input type="range" id="maxEmailAge" class="override-pointer-events" step="60" min="60" value="300" max="1800" style="width:100%" />
+						</label>
+						<!--<button class="danger" style="font-size:smaller;width:100%">Revoke token</button>-->
+					</div>
+				</div>
+			</details>
+			<details>
+				<summary class="tab">Advanced</summary>
+				<label class="danger" title="Automatically fill one-time-passcodes">
+					<input type="checkbox" id="autoFill" />
+					<span class="name">Auto-fill OTP</span>
+				</label>
+				<!--<button disabled>Export secrets</button>-->
+			</details>
+		</div>
+	</main>
 	<footer>Product of <a href="https://zengin.ca" target="_blank">Zengin</a></footer>
+	<dialog id="change-pin">
+		<input type="password" placeholder="Pin" />
+		<hr />
+		<form method="dialog" class="action-row">
+			<button value="save">Save</button>
+			<button>Cancel</button>
+		</form>
+	</dialog>
 </body>
 </html>

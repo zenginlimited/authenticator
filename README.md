@@ -10,6 +10,7 @@ Zengin Authenticator is a Chrome Extension designed to securely generate and man
 - Secure local storage of secret keys
 - Quick copy to clipboard for authentication codes
 - Fully compatible with Chrome and Chromium-based browsers
+- Paste codes directly from Gmail
 
 ## Installation
 1. Clone or download this repository:
@@ -28,7 +29,7 @@ The extension should now appear in your browser toolbar.
 3. Copy the generated authentication code to the input box
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License v3.0.
 
 ## Contact
 Zengin Limited — [**@zenginlimited**](https://github.com/zenginlimited)
